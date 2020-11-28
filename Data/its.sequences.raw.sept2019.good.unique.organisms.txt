@@ -1,0 +1,268 @@
+Sequence_ID	Organism
+Rh-127	Ceratobasidiaceae 
+Rh-143	Curvularia coatesiae
+Rh-185	Rhizoctonia fragariae
+Rh-22	Phomopsis acerina
+Rh-258	Paraphoma radicina
+Rh-277a	Rhizoctonia fragariae
+Rh-293-rep2	Rhizoctonia fragariae
+Rh-308	Rhizoctonia fragariae
+Rh-328	Dipodascus 
+Rh-344	Pseudallescheria ellipsoidea
+Rh-356	Pseudallescheria ellipsoidea
+Rh-357	Atrocalyx sp
+Rh-369	Atrocalyx 
+Rh-41	Nectriaceae 
+Rh-42	Fusarium 
+Rh-50	Neocosmospora 
+Rh-53	Lophiotremataceae 
+Rh-57	Dactylonectria novozelandica
+Rh-60	Basidiomycota 
+Rh-62	Nectriaceae 
+Rh-63	Ilyonectria macrodidyma
+Rh-65	Fusarium 
+Rh-67	Neocosmospora falciformis
+Rh-68	Agaricomycetes 
+Rh-70	Phialemoniopsis hongkongensis
+Rh-74	Curvularia 
+Rh-79-rep3	Neocosmospora rubicola
+Rh-80	Neocosmospora rubicola
+Rh-81	Neocosmospora rubicola
+Rh-82	Neocosmospora falciformis
+Rh-83	Paraphoma radicina
+Rh-85	Rhizoctonia fragariae
+Rh-86	Plectosphaerella 
+Rh-91	Neocosmospora rubicola
+Rh-108-rep2	Cylindrocarpon vaginae
+Rh-109-rep2	Nectriaceae 
+Rh-11	Xylaria polymorpha
+Rh-117-rep2	Fusarium keratoplasticum
+Rh-119	Neocosmospora rubicola
+Rh-121-rep2	Neocosmospora rubicola
+Rh-122-rep2	Neocosmospora rubicola
+Rh-150a	Trichoderma 
+Rh-152	Trichoderma 
+Rh-153	Trichoderma fomitopsis
+Rh-161-rep2	Phomopsis 
+Rh-165-rep2	Neocosmospora rubicola
+Rh-169	Trichoderma 
+Rh-178	Chaetomiaceae 
+Rh-187	Neocosmospora perseae
+Rh-192	Nectriaceae 
+Rh-195	Nectriaceae 
+Rh-201-rep2	Nectriaceae 
+Rh-204	Trichoderma 
+Rh-205	Nectriaceae 
+Rh-211	Nectriaceae 
+Rh-216	Neocosmospora perseae
+Rh-224-rep2	Trichoderma simmonsii
+Rh-230	Neocosmospora perseae
+Rh-231-rep2	Neocosmospora perseae
+Rh-236	Mycoleptodiscus terrestris
+Rh-236a	Zopfiella lundqvistii
+Rh-239	Nectriaceae 
+Rh-269-rep2	Acephala sp
+Rh-280-rep2	Rhizoctonia fragariae
+Rh-287-rep2	Rhizoctonia fragariae
+Rh-3	Sordariomycetes 
+Rh-304	Zopfiella marina
+Rh-304a	Fusarium 
+Rh-317-rep2	Rhizoctonia fragariae
+Rh-320	Apodus oryzae
+Rh-320a	Chaetomiaceae 
+Rh-324a	Trichoderma simmonsii
+Rh-330-rep2	Colletotrichum pisi
+Rh-343	Cercophora tuberculata
+Rh-346	Zopfiella latipes
+Rh-346a	Zopfiella latipes
+Rh-361	Lophiotremataceae 
+Rh-370-rep2	Savoryellaceae sp
+Rh-385	Trichoderma 
+Rh-388	Epulorhiza sp
+Rh-394	Paraphoma radicina
+Rh-396	Tulasnella calospora
+Rh-402	Fusarium 
+Rh-403	Zopfiella lundqvistii
+Rh-406	Ascomycota 
+Rh-408	Pseudogymnoascus 
+Rh-414	Atrocalyx 
+Rh-415	Lophiotremataceae 
+Rh-422	Zopfiella lundqvistii
+Rh-423	Savoryellaceae sp
+Rh-424	Zopfiella lundqvistii
+Rh-425	Zopfiella lundqvistii
+Rh-426	Rhizoctonia fragariae
+Rh-428	Cylindrocarpon vaginae
+Rh-432	Pseudallescheria boydii
+Rh-440	Zopfiella lundqvistii
+Rh-444	Rhizoctonia fragariae
+Rh-446	Savoryellaceae sp
+Rh-45	Penicillium thiersii
+Rh-54	Atrocalyx 
+Rh-79-rep2	Nectriaceae 
+Rh-96	Paraphoma radicina
+Rh-117	Cylindrocarpon vaginae
+Rh-129	Agaricomycetes 
+Rh-154	Trichoderma 
+Rh-197	Trichoderma fomitopsis
+Rh-224a	Trichoderma 
+Rh-296b	Agaricomycetes 
+Rh-374	Cladosporium 
+Rh-143-01	Curvularia gudauskasii
+Rh-143-1	Curvularia gudauskasii
+Rh-143-4	Curvularia gudauskasii
+Rh-149-01	Sordariomycetes 
+Rh-149-1	Chaetomium reflexum
+Rh-178-1	Lasiosphaeriaceae 
+Rh-178-4	Apodus oryzae
+Rh-182-01	Rhizoctonia fragariae
+Rh-202-01	Agaricomycetes 
+Rh-202-1	Ceratobasidiaceae 
+Rh-222-01	Sordariales 
+Rh-253-01	Sordariomycetes 
+Rh-253-1	Sordariales 
+Rh-253-4	Apodus oryzae
+Rh-293-01	Rhizoctonia fragariae
+Rh-293-1	Agaricomycetes 
+Rh-319-4	Pleosporales 
+Rh-328-1	Trichoderma glaucum
+Rh-338-01	Pleosporales fam
+Rh-352-4	Sordariomycetes 
+Rh-363-01	Savoryellaceae sp
+Rh-363-1	Savoryellaceae sp
+Rh-113	Diaporthe eucalyptorum
+Rh-130	Apodus oryzae
+Rh-136	Curvularia coatesiae
+Rh-138	Apodus oryzae
+Rh-139	Alternaria doliconidium
+Rh-146	Neocosmospora rubicola
+Rh-147	Neocosmospora rubicola
+Rh-157	Phialemoniopsis curvata
+Rh-160	Phialemoniopsis curvata
+Rh-173	Rhizoctonia fragariae
+Rh-175	Paraphoma 
+Rh-18	Sordariomycetes 
+Rh-189	Cylindrocarpon vaginae
+Rh-196	Nectriaceae 
+Rh-199	Zopfiella lundqvistii
+Rh-201	Neocosmospora 
+Rh-203	Scedosporium minutisporum
+Rh-210	Rhizoctonia fragariae
+Rh-213	Neocosmospora perseae
+Rh-214	Neocosmospora perseae
+Rh-217	Nectriaceae 
+Rh-223	Paraphoma radicina
+Rh-228	Ceratobasidiaceae 
+Rh-23	Nectriaceae 
+Rh-232	Rhizoctonia fragariae
+Rh-238	Trichoderma evansii
+Rh-245	Rhizoctonia fragariae
+Rh-247	Diaporthe 
+Rh-249	Fusarium 
+Rh-250	Pseudochaetosphaeronema sp
+Rh-252	Ceratobasidiaceae 
+Rh-256	Rhizoctonia fragariae
+Rh-257	Tulasnellaceae 
+Rh-260	Paraphoma radicina
+Rh-261	Tulasnella deliquescens
+Rh-267	Rhizoctonia 
+Rh-276	Rhizoctonia fragariae
+Rh-283	Fungi 
+Rh-284-rep2	Atrocalyx 
+Rh-287	Rhizoctonia fragariae
+Rh-288	Ceratobasidium 
+Rh-298	Phialemoniopsis hongkongensis
+Rh-302	Atrocalyx sp
+Rh-307	Rhizoctonia fragariae
+Rh-316	Ascomycota 
+Rh-32	Fusarium 
+Rh-321	Zopfiella marina
+Rh-322	Sordariomycetes 
+Rh-329	Zopfiella lundqvistii
+Rh-330	Ascomycota 
+Rh-331	Atrocalyx 
+Rh-334	Phialemoniopsis hongkongensis
+Rh-341	Microascales 
+Rh-342	Malassezia 
+Rh-347	Pseudallescheria 
+Rh-350	Lophiotremataceae 
+Rh-366	Trichoderma yunnanense
+Rh-384	Chaetomiaceae 
+Rh-386	Tulasnella deliquescens
+Rh-387	Ceratobasidiaceae 
+Rh-391	Tulasnella 
+Rh-393	Diaporthe 
+Rh-10	Fungi 
+Rh-100	Trichoderma 
+Rh-101	Fusarium oxysporum
+Rh-102	Paraphoma radicina
+Rh-103	Nectriaceae 
+Rh-104	Phaeosphaeriaceae 
+Rh-105	Alternaria 
+Rh-107	Pseudochaetosphaeronema sp
+Rh-108	Nectriaceae 
+Rh-109	Thelonectria viridispora
+Rh-110	Phaeosphaeriaceae 
+Rh-111	Ceratobasidiaceae 
+Rh-112	Pseudochaetosphaeronema sp
+Rh-114	Diaporthe 
+Rh-115	Ascomycota 
+Rh-116b	Entrophospora sp
+Rh-118	Sordariomycetes 
+Rh-120	Neocosmospora rubicola
+Rh-121	Neocosmospora rubicola
+Rh-122	Nectriaceae 
+Rh-123	Nectriaceae 
+Rh-124	Trichoderma 
+Rh-126	Rhizoctonia fragariae
+Rh-128	Ceratobasidiaceae 
+Rh-135	Rhizoctonia fragariae
+Rh-142	Rhizoctonia fragariae
+Rh-144	Ceratobasidiaceae 
+Rh-161	Sordariomycetes 
+Rh-164	Pleosporales 
+Rh-165	Bionectria 
+Rh-170	Rhizoctonia fragariae
+Rh-177	Rhizoctonia fragariae
+Rh-184	Rhizoctonia fragariae
+Rh-188	Fungi 
+Rh-194	Ascomycota 
+Rh-20	Penicillium 
+Rh-226	Nectriaceae 
+Rh-231	Neocosmospora perseae
+Rh-234	Rhizoctonia fragariae
+Rh-235	Rhizoctonia fragariae
+Rh-237	Rhizoctonia fragariae
+Rh-25	Trichoderma asperellum
+Rh-254	Rhizoctonia fragariae
+Rh-26	Paraphoma radicina
+Rh-27	Ascomycota 
+Rh-277	Rhizoctonia fragariae
+Rh-280	Ascomycota 
+Rh-284	Ceratobasidiaceae 
+Rh-294	Phialemoniopsis hongkongensis
+Rh-309	Rhizoctonia fragariae
+Rh-310	Rhizoctonia fragariae
+Rh-311	Ceratobasidiaceae 
+Rh-325	Alternaria 
+Rh-326	Nectriaceae 
+Rh-335	Sordariomycetes 
+Rh-34	Pleosporales 
+Rh-35	Pleosporales 
+Rh-362	Agaricomycetes 
+Rh-367	Diaporthe 
+Rh-368	Zopfiella lundqvistii
+Rh-370	Nectriaceae 
+Rh-371	Zopfiella marina
+Rh-378	Nectriaceae 
+Rh-381	Rhizoctonia fragariae
+Rh-382	Sordariales 
+Rh-392	Diaporthe 
+Rh-4	Fusarium 
+Rh-437	Rhizoctonia fragariae
+Rh-6	Xylariaceae 
+Rh-6a	Nectriaceae 
+Rh-7	Fusarium lunulosporum
+Rh-77	Sordariomycetes 
+Rh-79	Sordariomycetes 
+Rh-93	Fusarium 
