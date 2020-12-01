@@ -18,16 +18,16 @@ library(rcompanion)
 
 # set working directory
 
-setwd('..')
+setwd('/Users/will1809/OneDrive - purdue.edu/Repositories.GitHub/WilliamsGinzel.JnGmFusarium.2021')
 
 source("Code/OTU.functions.R")
 
 # read in clusters and assignments from mothur
 
-OTUS.mothur <- read.csv("Data/mothur.otus.ForestPlant.Sept25.csv", header=F)
+OTUS.mothur <- read.csv("Data/mothur.otus.ForestPlant.Nov20.2020.csv", header=F)
 names(OTUS.mothur) <- c('otu','Isolate')
-OTUS <- convert.otu.table(OTUS.mothur)
-OTUS$Isolate <- OTUS$Isolate %>% gsub('(?<=Rh)-', '', ., perl=T)
+OTUS <- convert.otu.table_(OTUS.mothur)
+OTUS$Isolate <- OTUS$Isolate %>% gsub('(?<=Rh)_', '', ., perl=T)
 
 # read in experiment metadata
 
@@ -44,18 +44,18 @@ inoc.design<-inoc.design[-c(24,67, 103,107),]
 # works now, might not later
 # design<-na.omit(design)
 
-pattern <- "(?<=^Rh)[0-9]{1,3}(?=(-[ab]{0,1}((rep[23])|([014]{1,2}))))?"
+pattern <- "(?<=^Rh)[0-9]{1,3}(?=([ab])|(_[12]))?"
 
 design$Parent.isolate <- regmatches(design$Isolate, regexpr(pattern, design$Isolate, perl=T))
 
 OTUS$Parent.isolate <- regmatches(OTUS$Isolate, regexpr(pattern, OTUS$Isolate, perl=T))
 
-fulld <- na.omit(plyr::join(OTUS, design, type="right",by="Parent.isolate", match = "all")[,1:8])
-
-
+fulld <- na.omit(plyr::join(OTUS, design[,3:6], type="right",by="Parent.isolate", match = "all"))
+dim(design)
+dim(fulld)
 #fulld <- na.omit(left_join(OTUS, design, by="Parent.isolate", match = "all")[,1:8])
-
-partd <- fulld[!(fulld$Treat %in% c("H","L"," ","","????")),] %>%
+fulld<-fulld[-10,]
+partd <- fulld %>%
 mutate(Treat=str_replace_all(string = Treat, pattern='S', 'Control')) %>%
 mutate(Treat=str_replace_all(string = Treat, pattern='P', 'Plantation')) %>%
 mutate(Treat=str_replace_all(string = Treat, pattern='F', 'Forest'))
@@ -64,13 +64,13 @@ partd$Treat <- factor(partd$Treat, levels=c('Control','Plantation','Forest'))
 
 partd$plant <- paste(partd$Treat, partd$Rep)
 
-as.factor(design[-c(1:74),"Isolate"]) %>% setdiff(as.factor(partd$Isolate))
+as.factor(design[,"Isolate"]) %>% setdiff(as.factor(partd$Isolate))
 
 sum(partd$Treat=="Forest")
 sum(partd$Treat=="Plantation")
 sum(partd$Treat=="Control")
 
-taxids <- read_tsv("Data/forestplant.its.sequences.raw.sept2019.good.unique.opti_mcc.0.05.cons.taxonomy") %>% dplyr::rename(otu=OTU) %>% dplyr::rename(taxonomy=Taxonomy) %>% 
+taxids <- read_tsv("Data/ForPlant.ITS.MesquiteAssembly.Final.mothur.unique.opti_mcc.0.05.cons.taxonomy") %>% dplyr::rename(otu=OTU) %>% dplyr::rename(taxonomy=Taxonomy) %>% 
 	mutate(taxonomy=str_replace_all(string=taxonomy, pattern="\\(\\d*\\)", replacement="")) %>%
 	mutate(taxonomy=str_replace_all(string=taxonomy, pattern=";$", replacement="")) %>%
 	mutate(taxonomy=str_replace_all(string=taxonomy, pattern="[kpocfgs]\\__", replacement="")) %>%
@@ -81,7 +81,7 @@ taxids$otu <- as.factor(taxids$otu)
 
 taxids %>% anti_join(., fulld) 
 
-taxids %>% inner_join(., fulld)# %>% write.csv('OTU.table.09.26.19.csv')
+taxids %>% inner_join(., fulld) %>% write.csv('OTU.table.11.30.20.csv')
 
 data.frame(isolate=c((taxids %>% inner_join(., fulld))$Isolate[grep('Fusarium', (taxids %>% inner_join(., fulld))$genus)],
 (taxids %>% inner_join(., fulld))$Isolate[grep('Neocosmospora', (taxids %>% inner_join(., fulld))$genus)],
@@ -96,6 +96,7 @@ otu.by.genus <- non.singletons %>% filter (!is.na(genus)) %>%
 	group_by (Treat, genus) %>% dplyr::summarize (count = n()) %>%
 	arrange(Treat, (desc(count))) #%>% dplyr::top_n(8, count)
 
+unique(taxids$otu)
 unique(otu.by.genus$genus)
 
 otu.by.order <- taxids %>% inner_join(., partd) %>% filter (!is.na(order)) %>%
@@ -133,7 +134,8 @@ intersect(forest.otus,plantation.otus)
 intersect(control.otus,forest.otus)
 intersect(forest.otus,plantation.otus) %>% intersect (control.otus)
 
-venn.diagram(list(control.otus,plantation.otus,forest.otus),"Venn.png",imagetype="png",category.names=c("Control","Plantation","Forest"), cat.pos=c(0,0,180))
+library(VennDiagram)
+venn.diagram(list(control.otus,plantation.otus,forest.otus),"VennNov30.2020.png",imagetype="png",category.names=c("Control","Plantation","Forest"), cat.pos=c(0,0,180))
 
 print(otu.by.genus, n=80)
 
@@ -191,12 +193,12 @@ mutate(relabund= count/t) %>% dplyr::rename(Genus=genus) %>%
 		geom_bar(aes(), stat="identity", position="fill")+
 		guides(fill = guide_legend(keywidth = 1, keyheight = 1)) +
   		xlab("") +
-  		ylab("") +
+  		ylab("Relative abundance\n") +
   		scale_x_discrete(labels = c("Steam-treated","Plantation","Forest")) +
 		theme(axis.text.x=element_text(size=14, angle = 45, hjust = 1),
 			axis.text.y=element_text(size = 14),
 			axis.line.y=element_line(),
-			axis.title=element_text(size=24),
+			axis.title=element_text(size=14),
 			axis.line.x = element_blank(),
 			axis.ticks.x = element_blank(),
 			panel.border = element_blank(),
@@ -218,12 +220,12 @@ mutate(relabund= count/t) %>% dplyr::rename(Order=order) %>%
 		geom_bar(aes(), stat="identity", position="fill")+
 		guides(fill = guide_legend(keywidth = 1, keyheight = 1)) +
   		xlab("") +
-  		ylab("") +
+  		ylab("Relative abundance\n") +
   		scale_x_discrete(labels = c("Steam-treated","Plantation","Forest")) +
 		theme(axis.text.x=element_text(size=14, angle = 45, hjust = 1),
 			axis.text.y=element_text(size = 14),
 			axis.line.y=element_line(),
-			axis.title=element_text(size=24),
+			axis.title=element_text(size=14),
 			axis.line.x = element_blank(),
 			axis.ticks.x = element_blank(),
 			panel.border = element_blank(),
@@ -241,14 +243,14 @@ mutate(relabund= count/t) %>% dplyr::rename(Order=order) %>%
 gplot + scale_fill_manual(values=colorRampPalette(c(tanagr_palette("tangara_parzudakii"),tanagr_palette("chlorochrysa_nitidissima"),tanagr_palette("tangara_chilensis")))(colors.n.genus))
 
 p1 <- gplot.genus + scale_fill_manual(values=colorRampPalette(c(tanagr_palette("tangara_seledon"),tanagr_palette("ramphocelus_sanguinolentus"),tanagr_palette("chlorochrysa_nitidissima"),tanagr_palette("tangara_chilensis")))(colors.n.genus))
-#ggsave(p1, width=12, height=7, filename="Genus.bars.11.20.2020.png", bg = "transparent")
+#ggsave(p1, width=12, height=7, filename="Genus.bars.11.30.2020.png", bg = "transparent")
 
 custom_tanager <- c(tanagr_palette("tangara_seledon"),tanagr_palette("ramphocelus_sanguinolentus"),tanagr_palette("chlorochrysa_nitidissima"),tanagr_palette("tangara_chilensis"))[-c(13,7)]
 
 length(custom_tanager)
 
 p2 <- gplot + scale_fill_manual(values=custom_tanager)
-#ggsave(p2, width=10, height=7, filename="Order.bars.5.13.2020.png", bg = "transparent")
+#ggsave(p2, width=10, height=7, filename="Order.bars.11.30.2020.png", bg = "transparent")
 
 ### OTUs found in each treat
 
@@ -282,7 +284,7 @@ interaction.stackedgplot <- otu.by.order.inoc.treat %>% left_join(., otu.by.orde
 		geom_bar(aes(), stat="identity", position="fill")+ facet_grid(~Treat, labeller=labeller(Treat = soil.labs))+
 		guides(fill = guide_legend(keywidth = 1, keyheight = 1)) +
   		xlab("") +
-  		ylab("") +
+  		ylab("Relative abundance\n") +
   		scale_x_discrete(labels = c("Sham",expression(paste(italic("G. morbida"))))) +
 		theme(
 			strip.text.x = element_text(size = 14, color="black", face="bold"),
@@ -290,7 +292,7 @@ interaction.stackedgplot <- otu.by.order.inoc.treat %>% left_join(., otu.by.orde
 			axis.text.x=element_text(size=14, angle = 45, hjust = 1),
 			axis.text.y=element_text(size = 14),
 			axis.line.y=element_line(),
-			axis.title=element_text(size=24),
+			axis.title=element_text(size=20, face="bold"),
 			axis.line.x = element_blank(),
 			axis.ticks.x = element_blank(),
 			panel.border = element_blank(),
@@ -304,7 +306,7 @@ interaction.stackedgplot <- otu.by.order.inoc.treat %>% left_join(., otu.by.orde
     		legend.spacing.x = unit(0.5, 'cm'),
     		legend.spacing.y = unit(0.5, 'cm'),
     		legend.title = element_text(size=14))+scale_fill_manual(values=custom_tanager)
-ggsave(interaction.stackedgplot , width=12, height=7, filename="Order.bars.interactive.Final.png", bg = "transparent")
+ggsave(interaction.stackedgplot , width=12, height=7, filename="Figure 3 Nov 30.png", bg = "transparent")
 
 
 ##### ADONIS
@@ -330,14 +332,17 @@ intersect(f.only,p.only)
 
 non.singletons2 <- taxids %>% inner_join(., partd) %>% filter (class != "Malasseziomycetes") %>% group_by (otu) %>% filter (n() > 5) %>% ungroup()
 
-xtra<-read.csv("Data/No.isolates.ForPlant.csv")
+xtra<-read.csv("Data/No.isolates.ForPlant.Nov30.csv")
 
 joined_d <- taxids %>% inner_join(., partd) %>% plyr::join(., inoc.design[,c(3,6)], by='plant', type='left', match="first")
 
 fullmatrix<-with(joined_d, table(plant,otu))
 
+dim(fullmatrix)
+dim(xtra)
+
 nonsinglematrix <- fullmatrix[,colnames(fullmatrix) %in% non.singletons2$otu]
-nonsinglematrix <-nonsinglematrix[-which(rownames(nonsinglematrix)=="Control 30"),]
+#nonsinglematrix <-nonsinglematrix[-which(rownames(nonsinglematrix)=="Control 30"),]
 
 rownames(inoc.design) <- inoc.design$plant
 
@@ -345,8 +350,8 @@ communitymatrix<-nonsinglematrix [-which(rowSums(nonsinglematrix)==0),]
 
 taxids[taxids$otu %in% colnames(communitymatrix),c('otu','family','genus','species')]
 
-rowSums(communitymatrix[,c(3,5)])
-
+rowSums(communitymatrix)
+dim(communitymatrix)
 gm2<-inoc.design[rownames(communitymatrix),"Inoc"] 
 soil2<-as.factor(inoc.design[rownames(communitymatrix),"Soil"])
 length(gm2);length(soil2);dim(communitymatrix)
@@ -363,6 +368,8 @@ adonis2(d ~ gm2 + soil2:gm2 +  soil2, permutations=9999)
 
 adonis2(d ~ gm2 +  soil2+ soil2:gm2 , permutations=9999)
 adonis2(d ~ soil2+gm2 +  soil2:gm2 , permutations=9999)
+
+adonis2(d ~ gm2 +  soil2 , permutations=9999)
 
 
 #### Poisson regression on Fusarium spp.
@@ -384,10 +391,11 @@ joined_d$Ceratobasidiaceae <- r.j_d
 occurrence.data <- summaryBy(Ceratobasidiaceae + Nectriaceae ~ Treat + Inoc + plant, data=joined_d, FUN=sum , keep.names=T)
 levels(occurrence.data$Treat)[1]<-"Sterile"
 
-occurrence.data<-occurrence.data[-which(occurrence.data$plant=="Control 30"),]
+
 occurrence.data <- rbind(occurrence.data, xtra)
 xtabs(~Inoc+Treat, occurrence.data)
 dim(occurrence.data)
+
 
 pois.fus <- glm(Nectriaceae ~ Treat * Inoc, "poisson", occurrence.data)
 Anova(pois.fus)
@@ -465,6 +473,6 @@ rhzplot<-ggplot(data = rhz.groups, aes(x = Treat, y = rate, fill=Inoc)) +
   xlab("\nSoil Amendment") +
   labs(fill = "Inoculation")
 
-pdf("Figures/FusRhz.reiso.quasi.Final.Nov19.pdf", width=12, height=6)
-grid.arrange(fusplot + labs(title="A"), rhzplot + labs(title="B"), nrow=1)
+pdf("Figure 4 Nov 30.pdf", width=12, height=6)
+grid.arrange(fusplot + labs(title="(a)"), rhzplot + labs(title="(b)"), nrow=1)
 dev.off()

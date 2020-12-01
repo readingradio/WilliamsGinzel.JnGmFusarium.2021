@@ -16,3 +16,18 @@ convert.otu.table <- function (csv = data.frame()) {
     }
     return (csv)
 }
+
+convert.otu.table_ <- function (csv = data.frame()) {
+    otus <- dim(csv)[1]
+    csv$Isolate <- as.character(csv$Isolate)
+    pattern <- "(?<=^)Rh_[0-9]{1,3}(_([123]))?(?=,)"
+    for (i in 1:otus) {
+        m <- regexpr(pattern, csv[i,2], perl=T)
+        while (m > 0) {
+            csv <- rbind(csv, data.frame(otu = csv[i,1], Isolate = regmatches(csv[i,2], m)))
+            csv[i, 2] <- sub("(?<=^)Rh_[0-9]{1,3}(_([123]))?,", "", csv[i, 2], perl=T)
+            m <- regexpr(pattern, csv[i,2], perl=T)
+        }
+    }
+    return (csv)
+}

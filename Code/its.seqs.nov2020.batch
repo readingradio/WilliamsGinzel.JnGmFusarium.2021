@@ -1,0 +1,7 @@
+set.dir(input=/home/will1809 output=/home/will1809)
+unique.seqs(fasta=ForPlant.ITS.MesquiteAssembly.Final.mothur.fasta)
+classify.seqs(fasta=current, name=current, reference=UNITE_public_mothur_full_02.02.2019.fasta, taxonomy=UNITE_public_mothur_full_02.02.2019_taxonomy.txt, cutoff=51, processors=24)
+pairwise.seqs(fasta=current, cutoff=0.05, countends=F, processors=24)
+cluster(column=current, name=current, cutoff=0.05)
+classify.otu(list=current, taxonomy=current)
+quit()
