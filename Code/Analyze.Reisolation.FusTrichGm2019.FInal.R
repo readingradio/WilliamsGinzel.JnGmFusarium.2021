@@ -1,4 +1,4 @@
-setwd("..")
+setwd("/Users/will1809/OneDrive - purdue.edu/Dissertation/GMW.Dissertation.Analyses")
 
 fusarium<-read.csv("Data/Fus.Clust1.All.Tissues.3.31.2020.csv" )
 cankers<-read.csv("Data/FT.Soil.Gm.2019.cankers.csv" )
@@ -87,7 +87,7 @@ fusarium.summary[fusarium.summary$Source=="Soil",'HSD'] <- soil.groups[c("NS","C
 
 fusarium.summary
 
-pdf("Figures/FTG.reiso.Final.bw.pdf", width=9, height=5)
+pdf("Figures/Figure_S3.pdf", width=9, height=5)
 ggplot(data = fusarium.summary, aes(x = Treatment, y = Colonies.mean, fill=Source)) +
   geom_bar(stat="identity", color="black", position=position_dodge()) +
   geom_errorbar(aes(ymin=Colonies.mean, ymax=Colonies.mean+Colonies.sd/sqrt(Colonies.length)), position=position_dodge(0.9), width=0.2) +
