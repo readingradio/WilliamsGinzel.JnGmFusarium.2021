@@ -15,7 +15,7 @@ library(nlme)
 library(asbio)
 library(MuMIn)
 
-source("Code/Canker.functions.R")
+source("Code/Canker.functions.randomcorrected2.R")
 
 ## cankers
 
@@ -65,7 +65,9 @@ r.squaredGLMM(out.random$Regression)
 nagelkerke(out.random$Regression, null=lm(mm2^out$lambda ~ 1, data=cank[-out.random$outliers,]))
 nagelkerke(out.random$Regression, null=lmer(mm2^out$lambda ~ 1 + (1|Plant), data=cank[-out.random$outliers,]))
 
-anova(lmer(mm2^out$lambda ~ 1 + Treatment+(1|Plant), data=cank[-out$outliers,]), lmer(mm2^out$lambda ~ 1 + (1|Plant), data=cank[-out$outliers,]))
+anova(lmer(mm2^out$lambda ~ Treatment+(1|Plant), data=cank[-out$outliers,]), lmer(mm2^out$lambda ~ (1|Plant), data=cank[-out$outliers,]))
+
+lmer(mm2^out$lambda ~ Treatment+(1|Plant), data=cank[-out$outliers,]) %>% Anova()
 
 summary(out$Regression)$r.squared
 
@@ -181,13 +183,13 @@ grid.arrange(necrplot, calplot, nrow=1)
 dev.off()
 
 ## multipanel bw
-pdf("Figures/FTGm.multi.bw.clmm.Tukey.Final.6.9.2020.pdf", width=12, height=5)
-grid.arrange(necrplot.bw.long.tuk + labs(title='A'), calplot.bw + labs(title="B"), nrow=1)
+pdf("Figure_5.pdf", width=12, height=5)
+grid.arrange(necrplot.bw.long.tuk + labs(title='(a)'), calplot.bw + labs(title="(b)"), nrow=1)
 dev.off()
 
 random.effects.cank <- lme(mm2 ~ Treatment, random = ~1 | Canker, data=cank, method='ML', contrasts=)
 summary(random.effects.cank)
-Anova(random.effects.cank, type=3)
+Anova(random.effects.cank, type=2)
 
 ## is canker position significant?
 

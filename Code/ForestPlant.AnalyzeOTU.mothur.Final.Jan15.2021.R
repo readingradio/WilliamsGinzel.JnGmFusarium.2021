@@ -428,7 +428,7 @@ with(summ.qpr, 1-deviance/null.deviance)
 yl.fus<-expression(paste("Isolation rate of \n", italic("Fusarium\n"), " spp.\n"))
 fusplot<-ggplot(data = fus.groups, aes(x = Treat, y = rate, fill=Inoc)) +
   geom_bar( stat="identity", color="black", position=position_dodge(), size=0.75) +
-  geom_errorbar(aes(ymin=rate, ymax=rate-SE), position=position_dodge(0.9), width=0.2, color=c("black","white","black","black","black","black"))+
+  geom_errorbar(aes(ymin=rate, ymax=rate-SE), position=position_dodge(0.9), width=0.2, color=c("black","black","black","black","black","white"))+
   geom_errorbar(aes(ymin=rate, ymax=rate+SE), position=position_dodge(0.9), width=0.2)+
 theme_bw() +
   scale_x_discrete(labels = c("Steam-treated","Plantation","Forest")) +
@@ -451,7 +451,7 @@ theme_bw() +
 yl.rhz<-expression(paste("Isolation rate of \n", italic("Rhizoctonia\n"), " spp.\n"))
 rhzplot<-ggplot(data = rhz.groups, aes(x = Treat, y = rate, fill=Inoc)) +
   geom_bar(stat="identity", color="black", position=position_dodge(), size=.75) +
-  geom_errorbar(aes(ymin=rate, ymax=rate-SE), position=position_dodge(0.9), width=0.2, color=c("black","white","black","white","black","white"))+
+  geom_errorbar(aes(ymin=rate, ymax=rate-SE), position=position_dodge(0.9), width=0.2, color=c("white","black","white","black","white","black"))+
   geom_errorbar(aes(ymin=rate, ymax=rate+SE), position=position_dodge(0.9), width=0.2)+
   theme_bw() +
   scale_x_discrete(labels = c("Steam-treated","Plantation","Forest")) +
@@ -472,7 +472,7 @@ rhzplot<-ggplot(data = rhz.groups, aes(x = Treat, y = rate, fill=Inoc)) +
   ylab(yl.rhz) +
   xlab("\nSoil Amendment") +
   labs(fill = "Inoculation")
-
-pdf("Figure_4.pdf", width=12, height=6)
+#quartz("Figure_4.pdf", width=12, height=6)
+#pdf("Figure_4.pdf", width=12, height=6)
 grid.arrange(fusplot + labs(title="(a)"), rhzplot + labs(title="(b)"), nrow=1)
-dev.off()
+#dev.off()
