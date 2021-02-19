@@ -14,12 +14,16 @@ library(MuMIn)
 library(emmeans)
 loadfonts()
 
+#function plots a callus dataset given the treatments, ratings
+#y.axis is a logical if you want it
+#test is the type of statistical test
 plot.callus <- function(treat, ratings, y.axis=TRUE, test=c("polr","wilcox"), adj='none', bw='T', letters=NULL) {
 	
+	# remove y axis from style
 	if (y.axis) {
 		axis.line.y = element_line(colour = "black")
-		axis.title.y = element_text(size = 16, face = "bold")
-		axis.text.y = element_text(size = 14)
+		axis.title.y = element_text(size = 14, face = "bold")
+		axis.text.y = element_text(size = 12)
 		axis.ticks.y = element_line()
 	} else {
 		axis.line.y = element_blank()
@@ -28,10 +32,12 @@ plot.callus <- function(treat, ratings, y.axis=TRUE, test=c("polr","wilcox"), ad
 		axis.ticks.y = element_blank()
 	}
 	
+	# conduct analysis
 	if (test == "wilcox") le <- wilcox.groups(analyze.callus(treat, ratings)$Pairwise.Wilcox)
 	else if (is.null(letters)) le <- analyze.callus.polr(treat, ratings, adj)$groups
 	else le <- letters
 
+	# create a contingency table for plotting purposes
 	caltab <- xtabs(~ Rating + TREAT, data.frame(TREAT=treat, Rating=ratings))
 	reltab <- decostand(caltab, 'total', 2)
 	toplot <- melt(reltab)
@@ -39,6 +45,7 @@ plot.callus <- function(treat, ratings, y.axis=TRUE, test=c("polr","wilcox"), ad
 	toplot$TREAT <- as.factor(toplot$TREAT)
 	toplot$Rating <- as.factor(toplot$Rating)
 	
+	# create the plot
 	if (bw) base_plot <- toplot %>% ggplot() +
 		geom_bar(aes(x=TREAT, y=value, fill=Rating), stat="identity", position="stack")+
 		geom_text(data = le, aes(x=Group, y=1.1, label=Letter))+
@@ -48,12 +55,13 @@ plot.callus <- function(treat, ratings, y.axis=TRUE, test=c("polr","wilcox"), ad
 		geom_text(data = le, aes(x=Group, y=1.1, label=Letter))+
 		scale_fill_brewer("Canker healing", palette='YlOrBr', direction=-1)
 
+	# plot with desired style
 	 base_plot +
 		labs(title=NULL,
 			x="Seed Inoculation Treatment\n",
 			y="\nProportion of replicates") +
 		theme(
-			#text = element_text(family="Montserrat"),
+			text = element_text(family="Arial"),
 			panel.border = element_blank(),
 			panel.background = element_rect(fill = "transparent"), # bg of the panel
     			plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
@@ -61,19 +69,20 @@ plot.callus <- function(treat, ratings, y.axis=TRUE, test=c("polr","wilcox"), ad
 			panel.grid.major = element_blank(),
 			panel.grid.minor = element_blank(),
 			axis.line.x = element_line(colour = "black"),
-			axis.title.x = element_text(size = 16),
-			axis.text.x = element_text(size = 14),
+			axis.title.x = element_text(size = 14),
+			axis.text.x = element_text(size = 12),
 			axis.line.y = axis.line.y,
 			axis.title.y = axis.title.y,
 			axis.text.y = axis.text.y,
 			axis.ticks.y = axis.ticks.y,
    	 		legend.background = element_rect(fill = "transparent"),
    	 		legend.box.background = element_blank(),
-   	 		legend.text = element_text(size=14),
-   	 		legend.title = element_text(size=18))+
+   	 		legend.text = element_text(size=12),
+   	 		legend.title = element_text(size=14))+
 		coord_flip()
 }
 
+# plots a necrosis data set given the treatments, necrosis data, what type of transformation was used on the data (a function), a string for units for the x axis, whether to do a tukey test, the labels for the y axis, whether there are random effects, and cooks cutoff for outlier removal
 plot.necrosis <- function(treat, necr, trans.test = function (x) x, units="mm\u00B2", y.axis=TRUE, xlab="Treatment", remove.0s = FALSE, remove.0s.test = FALSE, bc=TRUE, adjust=c("Tukey", "none"), bw='T', tick.labels = levels(treat), random=NULL, cov=NULL, cook.denom=4) {
 
 
@@ -81,6 +90,8 @@ plot.necrosis <- function(treat, necr, trans.test = function (x) x, units="mm\u0
 	#cook.denom is the denominator for outlier removal
 
 	if (bc) {
+		
+		# is there a covariate or not
 		if (is.null(cov)) analysis <- analyze.necrosis.bc.outliers(treat=treat, necr=necr, random=random, cook.denom)
 		else analysis <- analyze.necrosis.bcout.cov(treat=treat, necr=necr, cov=cov, random=random, cook.denom)
 		#if (!(is.null(cook.denom) | length(analysis$outliers == 0))) {
@@ -92,16 +103,13 @@ plot.necrosis <- function(treat, necr, trans.test = function (x) x, units="mm\u0
 		else analysis <- analyze.necrosis.cov(treat=treat, necr=necr, cov=cov, trans=trans.test, remove.0s=(remove.0s.test), random=random) 
 	}
 
-#pointstyle <- vector(length=length(necr))
-#pointstyle <- rep(0,length(necr))
-#if (length(analysis$outliers > 0)) pointstyle[analysis$outliers] <- 1
-#pointstyle <- as.factor(pointstyle)
-
+	# to plot 0s or not
 	if (remove.0s) {
 		treat <- treat[necr > 0]
 		necr <- necr[necr > 0]
 	}
 	
+	# output results of analysis in the terminal
 	print(analysis)
 	
 	spacer <- vector('numeric', length=2)
@@ -109,9 +117,8 @@ plot.necrosis <- function(treat, necr, trans.test = function (x) x, units="mm\u0
 	spacer[]<-c(2, 0.02)
 	#print(spacer)
 	
+	# use boxplot to get summary values for plotting
 	bp <- boxplot(necr ~ treat, plot=F)
-	#print(bp)
-	#print(analysis$lcgroups$Letter)
 
 	if (adjust == "none") {
 		if(!is.null(analysis$lcgroups)) n.bp <- with(bp, data.frame(Treatment=names, pos=stats[5,], letter.group = analysis$lcgroups$Letter))
@@ -122,7 +129,7 @@ plot.necrosis <- function(treat, necr, trans.test = function (x) x, units="mm\u0
 			n.bp <- with(bp, data.frame(Treatment=names, pos=stats[5,], letter.group = analysis$lctukgroups$Letter))
 	}}
 
-	#print(n.bp)
+	# black and white plot or color plot
 
 	if (bw) base_plot <- data.frame(n=necr, treat=treat) %>% ggplot(., mapping=aes(y=necr, x=treat)) +
 		geom_boxplot(outlier.shape=NA) 
@@ -131,7 +138,7 @@ plot.necrosis <- function(treat, necr, trans.test = function (x) x, units="mm\u0
 
 	style<-theme_bw() +
 		theme(
-			#text = element_text(family="Montserrat"),
+			text = element_text(family="Arial"),
 			panel.border = element_blank(),
 			panel.background = element_rect(fill = "transparent"), # bg of the panel
    			plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
@@ -140,8 +147,8 @@ plot.necrosis <- function(treat, necr, trans.test = function (x) x, units="mm\u0
 			panel.grid.major = element_blank(),
 			panel.grid.minor = element_blank(),
 			axis.line = element_line(colour = "black"),
-			axis.title = element_text(size = 16),
-			axis.text = element_text(size = 14))
+			axis.title = element_text(size = 14),
+			axis.text = element_text(size = 12))
 
 	#base_plot+style
 
@@ -165,22 +172,31 @@ plot.necrosis <- function(treat, necr, trans.test = function (x) x, units="mm\u0
 			xlab(paste(xlab, "\n", sep=""))
 }
 
+# wilcox test of ordinal callus score data
+
 analyze.callus <- function(treat, ratings) {
 	krusk <- kruskal.test(ratings ~ as.factor(treat))
 	wilxpair <- pairwise.wilcox.test(ratings, treat, paired = FALSE, p.adjust.method = 'BH')
 	list(Kruskal.Wallis = krusk, Pairwise.Wilcox = wilxpair)
 }
 
+# use a proportional odds regression to plot callus data
+
 analyze.callus.polr <- function(treat, ratings, adj="none") {
 	
 	d <<- data.frame(rg=ratings,tr=treat)
 	
+	# model and null model needed for deviance calculations
 	mod1 <- polr(rg ~ tr, data=d, method="logistic")
 	null1<- polr(rg ~ 1, data=d, method="logistic")
 	
+	# ordinal regression with clm needed for group state
 	mod2 <- clm(rg ~ tr, data=d, link="logit")
 	
+	#deviance based correlation coefficient
 	R2 <- 1-(mod1$deviance / null1$deviance)
+	
+	# group comparisons
 	mod1.emm <- emmeans(mod1, "tr", type='response')
 	contrasts.callus <- pairs(mod1.emm, adjust=adj) %>% as.data.frame()
 	rev <- pairs(mod1.emm, adjust=adj, reverse="T") %>% as.data.frame()
@@ -195,11 +211,15 @@ analyze.callus.polr <- function(treat, ratings, adj="none") {
 	ret
 }
 
+# wilcox groups
+
 wilcox.groups <- function (pw) {
 	comp <- na.omit(melt(pw$p.value))
 	comp$c <- with(comp, paste (Var1, Var2,  sep =" - "))
 	cldList(value ~ c, data=comp, threshold=0.05)
 }
+
+# analyze necrosis data by treatment, user specified transformation, whether to include 0s or a random variable (mixed model)
 
 analyze.necrosis <- function(treat, necr, trans = function (x) x, remove.0s=FALSE, random=NULL) {
 	if (remove.0s) {
@@ -207,21 +227,27 @@ analyze.necrosis <- function(treat, necr, trans = function (x) x, remove.0s=FALS
 		necr <- necr[necr > 0]
 	}
 
+	# transform the data
 	n <- trans(necr)
 
+	# simple linear model
 	if (is.null(random)) model <- lm(n ~ treat)
 
+	# mixed model
 	else model <- lmer(n ~ treat + (1|treat:random))
 
+	# ANOVA
 	t3 <- Anova(model, type=3)
 
+	# group comparisons
 	lcpairs<-as.data.frame(pairs(emmeans(model,'treat'),adjust='none'))
 	lctuk <- as.data.frame(pairs(emmeans(model,'treat')))
-	#print(lcpairs)
-	#print(data.frame(p=as.numeric(lcpairs$p.value),c=as.character(lcpairs$contrast)))
+
 	comp <- tryCatch({with(lcpairs,cldList(p ~ c, data=data.frame(p=as.numeric(p.value),c=as.character(contrast)), threshold=0.05))}, error = function (err) {return(NULL)})
 	
 	comptuk<- tryCatch({cldList(p.value ~ contrast, data=lctuk, threshold=0.05)}, error = function (err) {return(NULL)})
+
+	# calculate more statistics and return results
 	if (is.null(random)) {
 		anv <- aov(n ~ treat)
 		tuk <- TukeyHSD(anv, ordered=TRUE)
@@ -231,6 +257,8 @@ analyze.necrosis <- function(treat, necr, trans = function (x) x, remove.0s=FALS
 		return(list(Regression=model, ANOVA=t3, lc=lcpairs, lcgroups=comp, lctk=lctuk, lctukgroups=comptuk))
 	}
 }
+
+# see above - includes a covariate
 
 analyze.necrosis.cov <- function(treat, necr, cov, trans = function (x) x, remove.0s=FALSE, random=NULL) {
 	if (remove.0s) {
@@ -248,12 +276,8 @@ analyze.necrosis.cov <- function(treat, necr, cov, trans = function (x) x, remov
 
 	lcpairs<-as.data.frame(pairs(emmeans(model,'treat'),adjust='none'))
 	lctuk <- as.data.frame(pairs(emmeans(model,'treat')))
-	#print(lcpairs)
-	#print(data.frame(p=as.numeric(lcpairs$p.value),c=as.character(lcpairs$contrast)))
 	
 	comp <- tryCatch({with(lcpairs,cldList(p ~ c, data=data.frame(p=as.numeric(p.value),c=as.character(contrast)), threshold=0.05))}, error = function (err) {return(NULL)})
-	
-	#print(with(lcpairs,cldList(p ~ c, data=data.frame(p=as.numeric(p.value),c=as.character(contrast)), threshold=0.05)))
 	
 	comptuk<- tryCatch({cldList(p.value ~ contrast, data=lctuk, threshold=0.05)}, error = function (err) {return(NULL)})
 	if (is.null(random)) {
@@ -322,6 +346,3 @@ analyze.necrosis.bcout.cov <- function(treat, necr, cov, random=NULL, cook.denom
 
 	c(analyze.necrosis.cov(treat[!outliers], necr[!outliers], cov[!outliers], function(x) x^lambda, random=random[!outliers]), list(outliers=which(as.vector(outliers))), lambda=lambda)
 }
-
-
-#analyze.sporulation <- function() {}
