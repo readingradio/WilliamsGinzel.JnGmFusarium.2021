@@ -75,10 +75,10 @@ r.squaredGLMM(out.random$Regression)
 
 # Nagelkerke, McFadden, and one other R square and chi square calculations for model
 nagelkerke(out.random$Regression, null=lm(mm2^out$lambda ~ 1, data=cank[-out.random$outliers,]))
-nagelkerke(out.random$Regression, null=lmer(mm2^out$lambda ~ 1 + (1|Plant), data=cank[-out.random$outliers,]))
+nagelkerke(out.random$Regression, null=lmer(mm2^out$lambda ~ 1 + (1|Treatment:Plant), data=cank[-out.random$outliers,]))
 
 # analysis of deviance by comparing a nested model
-anova(lmer(mm2^out$lambda ~ Treatment+(1|Plant), data=cank[-out$outliers,]), lmer(mm2^out$lambda ~ (1|Plant), data=cank[-out$outliers,]))
+anova(lmer(mm2^out$lambda ~ Treatment+(1|Plant), data=cank[-out$outliers,]), lmer(mm2^out$lambda ~ (1|Treatment:Plant), data=cank[-out$outliers,]))
 
 # linear mixed effect model
 lmer(mm2^out$lambda ~ Treatment+(1|Plant), data=cank[-out$outliers,]) %>% Anova()
@@ -97,7 +97,7 @@ d<-attr(out.random$Regression, "frame")
 
 # more ANOVAs
 anova(lmer(n^out$lambda ~ treat + (1|random), data=d), lm(n^out$lambda ~ 1, data=d))
-anova(lmer(n^out$lambda ~ treat + (1|random), data=d), lmer(n^out$lambda ~ 1+ (1|random), data=d))
+anova(lmer(n^out$lambda ~ treat + (1|random), data=d), lmer(n^out$lambda ~ 1+ (1|treat:random), data=d))
 
 # look at regression output for mixed model
 out.random$Regression %>% summary()
@@ -199,7 +199,7 @@ with(polr$contrasts.rev, data.frame(contrast, estimate=exp(estimate), lower=exp(
 
 calplot<-with(callus, plot.callus(treat=Treatment, ratings=as.factor(Rating), y.axis=F, bw='F', letters=comp))
 
-calplot.bw<-with(callus, plot.callus(treat=Treatment, ratings=as.factor(Rating), y.axis=F, letters=comp))
+calplot.bw<-with(callus, plot.callus(treat=Treatment, ratings=as.factor(Rating), y.axis=F, letters=comp, scale_labs=c("0: No healing", "1: Reactive margin", "2: Partly healed", "3: Wound closed", "4: Fully healed")))
 
 ## multipanel
 
@@ -208,7 +208,8 @@ calplot.bw<-with(callus, plot.callus(treat=Treatment, ratings=as.factor(Rating),
 #dev.off()
 
 ## multipanel bw
-pdf("Figures/CH2PhytobiomesJ/Figure_5_final.pdf", width=10, height=4)
+pdf("Figure_5_final_correct.pdf", width=11, height=4)
+#pdf("Figures/CH2PhytobiomesJ/Figure_5_final.pdf", width=10, height=4)
 grid.arrange(necrplot.bw.long.tuk + labs(title="A")+theme(plot.title=element_text(size=14, face="bold", family="Arial")), calplot.bw + labs(title="B")+theme(plot.title=element_text(size=14, face="bold", family="Arial")), nrow=1)
 dev.off()
 

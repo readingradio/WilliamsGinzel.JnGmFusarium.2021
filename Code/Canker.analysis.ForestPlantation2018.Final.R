@@ -11,6 +11,8 @@ library(asbio)
 # helper code for analysis of cankers and healing
 source("Code/Canker.functions.randomcorrected2.R")
 
+the.data %>% xtabs(~ Treat + Inoc,.)
+
 # t test on necrosis between inoculated and non inoculated cankers
 with(the.data, t.test(A.necr[Inoc=="Control"]))
 with(the.data, t.test(A.necr[Inoc=="Control"],A.necr[Inoc=="Gm"]))
@@ -45,6 +47,10 @@ gm$Treat <- factor(gm$Treat, levels=c("S","P","F"))
 # same results for all the transformations
 gm.model <- analyze.necrosis.bc.outliers(treat=gm$Treat, necr=gm$A.necr)
 gm.model
+
+gm$Treat %>% table
+gm$Treat %>% length
+
 gm.model$Regression %>% summary()
 
 $ R squared
@@ -54,6 +60,9 @@ ss$'Sum Sq'[1]/(ss$'Sum Sq'[1]+ss$'Sum Sq'[2])
 
 # what are the outliers
 gm[gm.model$outliers,]
+
+# what are the outliers
+gm[-gm.model$outliers,] %>% xtabs(~Treat+Inoc,.)
 
 # untransformed group means and se after removal of outliers
 untrans <- analyze.necrosis(treat=gm$Treat[-gm.model$outliers], necr=gm$A.necr[-gm.model$outliers])
@@ -80,13 +89,17 @@ callus <- read.csv('Data/forest plant callus data.csv')
 callus.full <- join(callus, design, by=c('Treat','Rep'), type = 'left', match = 'first')
 callus.gm <- callus.full[callus.full$Inoc == 'Gm',]
 
-## reorder callus score
+data.frame(treat=callus.gm$Treat, ratings=callus.gm$Callus) %>% xtabs(~ ratings+ treat,.)
+
+## reorder callus score - error corrected May 14 2021 (see below)
 
 callus.gm$Callus <- as.factor(callus.gm$Callus)
 levels(callus.gm$Callus)<-c(rev(levels(callus.gm$Callus)))
-callus.gm$Treat <- factor(callus.gm$Treat, levels=c("S","P","F"))
+callus.gm$Treat <- factor(callus.gm$Treat, levels=c("F","P","S")) ## was "levels=c("S","P","F")"
 ratings<<-callus.gm$Callus
 treat <<- callus.gm$Treat
+
+data.frame(treat=callus.gm$Treat,ratings) %>% xtabs(~ ratings+ treat,.)
 
 polr<-analyze.callus.polr(callus.gm$Treat, callus.gm$Callus)
 
@@ -97,14 +110,14 @@ with(polr$contrasts.rev, data.frame(contrast, estimate=exp(estimate), lower=exp(
 # callus plots
 
 p2<-plot.callus(callus.gm$Treat, callus.gm$Callus, y.axis=F, bw="F")
-p2.bw<-plot.callus(callus.gm$Treat, callus.gm$Callus, y.axis=F)
+p2.bw<-plot.callus(callus.gm$Treat, callus.gm$Callus, y.axis=F, scale_labs=c("0: No healing", "1: Reactive margin", "2: Partly healed", "3: Fully healed"))
 
 # composite plots
-
-pdf("Figures/CH2PhytobiomesJ/Figure_2_final.pdf", width=10, height=4)
+pdf("Figure_2_final_correct.pdf", width=11, height=4)
+#pdf("Figures/CH2PhytobiomesJ/Figure_2_final_correct.pdf", width=10, height=4)
 grid.arrange(p1.bw + labs(title="A")+theme(plot.title=element_text(size=14, face="bold", family="Arial")), p2.bw + labs(title="B")+theme(plot.title=element_text(size=14, face="bold", family="Arial")), nrow=1)
 dev.off()
 
-pdf("Figures/ForstPlantGm.smbiome.multi.Final.pdf", width=12, height=6)
+pdf("Figures/ForstPlantGm.smbiome.multi.Final_correct.pdf", width=12, height=6)
 grid.arrange(p1, p2, nrow=1)
 dev.off()

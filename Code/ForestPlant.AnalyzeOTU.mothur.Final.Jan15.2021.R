@@ -227,7 +227,7 @@ mutate(relabund= count/t) %>% dplyr::rename(Genus=genus) %>%
 		theme(axis.text.x=element_text(size=14, angle = 45, hjust = 1),
 			axis.text.y=element_text(size = 14),
 			axis.line.y=element_line(),
-			axis.title=element_text(size=14),
+			axis.title=element_blank(),#text(size=14),
 			axis.line.x = element_blank(),
 			axis.ticks.x = element_blank(),
 			panel.border = element_blank(),
@@ -256,7 +256,7 @@ mutate(relabund= count/t) %>% dplyr::rename(Order=order) %>%
 		theme(axis.text.x=element_text(size=14, angle = 45, hjust = 1),
 			axis.text.y=element_text(size = 14),
 			axis.line.y=element_line(),
-			axis.title=element_text(size=14),
+			axis.title=element_blank(),#text(size=14),
 			axis.line.x = element_blank(),
 			axis.ticks.x = element_blank(),
 			panel.border = element_blank(),
@@ -277,6 +277,8 @@ mutate(relabund= count/t) %>% dplyr::rename(Order=order) %>%
 
 p1 <- gplot.genus + scale_fill_manual(values=colorRampPalette(c(tanagr_palette("tangara_seledon"),tanagr_palette("ramphocelus_sanguinolentus"),tanagr_palette("chlorochrysa_nitidissima"),tanagr_palette("tangara_chilensis")))(colors.n.genus))
 #ggsave(p1, width=12, height=7, filename="Figure_S1.pdf", bg = "transparent", device="pdf")
+
+Figure_3B <- p1
 
 # order stacked bar plot with nice colors
 
@@ -329,7 +331,7 @@ interaction.stackedgplot <- otu.by.order.inoc.treat %>% left_join(., otu.by.orde
 			axis.text.x=element_text(size=14, angle = 45, hjust = 1),
 			axis.text.y=element_text(size = 14),
 			axis.line.y=element_line(),
-			axis.title=element_text(size=20, face="bold"),
+			axis.title=element_blank(),#text(size=20, face="bold"),
 			axis.line.x = element_blank(),
 			axis.ticks.x = element_blank(),
 			panel.border = element_blank(),
@@ -345,6 +347,13 @@ interaction.stackedgplot <- otu.by.order.inoc.treat %>% left_join(., otu.by.orde
     		legend.title = element_text(size=14))+scale_fill_manual(values=custom_tanager)
 #ggsave(interaction.stackedgplot , width=12, height=7, filename="Figure_3.pdf", bg = "transparent", device="pdf")
 
+Figure_3A <- interaction.stackedgplot
+
+t <- text_grob("Relative abundance\n", rot=90, size=16, family="Arial")
+lay <- rbind(c(1,rep(2,11)), c(1,rep(3,11)))
+pdf("Fig_3_composite.pdf", width=12, height=12)
+grid.arrange(t, Figure_3A + labs(title="A")+theme(plot.title=element_text(size=14, face="bold", family="Arial")), Figure_3B + labs(title="B")+theme(plot.title=element_text(size=14, face="bold", family="Arial")), layout_matrix=lay)
+dev.off()
 
 ##### ADONIS
 

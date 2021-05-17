@@ -17,7 +17,7 @@ loadfonts()
 #function plots a callus dataset given the treatments, ratings
 #y.axis is a logical if you want it
 #test is the type of statistical test
-plot.callus <- function(treat, ratings, y.axis=TRUE, test=c("polr","wilcox"), adj='none', bw='T', letters=NULL) {
+plot.callus <- function(treat, ratings, y.axis=TRUE, test=c("polr","wilcox"), adj='none', bw='T', letters=NULL, scale_labs=levels(toplot$Rating)) {
 	
 	# remove y axis from style
 	if (y.axis) {
@@ -49,7 +49,7 @@ plot.callus <- function(treat, ratings, y.axis=TRUE, test=c("polr","wilcox"), ad
 	if (bw) base_plot <- toplot %>% ggplot() +
 		geom_bar(aes(x=TREAT, y=value, fill=Rating), stat="identity", position="stack")+
 		geom_text(data = le, aes(x=Group, y=1.1, label=Letter))+
-		scale_fill_grey("Canker healing")#, direction=-1)
+		scale_fill_grey("Inoculation wound", labels=scale_labs)
 	else base_plot <- toplot %>% ggplot() +
 		geom_bar(aes(x=TREAT, y=value, fill=Rating), stat="identity", position="stack")+
 		geom_text(data = le, aes(x=Group, y=1.1, label=Letter))+
